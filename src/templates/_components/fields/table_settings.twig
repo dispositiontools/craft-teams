@@ -1,0 +1,169 @@
+{% import '_includes/forms' as forms %}
+
+
+{#
+
+<option value="checkbox">Checkbox</option>| slot
+<option value="color">Colors/option> IF slot
+soption value "date">Date</option> (TR slot
+<option value "select">Dropdown</option> IF slot
+<option value "email"»Email</option> (I slot
+<option value-"lightswitch">Lightswitch</option> IF slot
+<option value "multiline"sMulti-line text</option> IF slot
+<option value "number">Number</option> (I slot
+<option value-"singleline" selected>Single-line text</option> TR slot
+<option value "time">Time</option> IF slot
+soption value="url"›URL</option> (Ir slot
+#}
+{#
+{{ columnsField|raw }}
+{{ defaultsField|raw }}
+
+
+#}
+
+
+
+{{ forms.textField({
+    label: "Member: Email subject line",
+    instructions: false,
+    id: 'memberEmailSubject',
+    name: 'memberEmailSubject',
+    value: field.memberEmailSubject,
+    errors: field.getErrors('memberEmailSubject'),
+    required: true
+}) }}
+
+{{ forms.textareaField({
+    label: "Member: Email plaintext",
+    instructions: false,
+    id: 'memberEmailPlainText',
+    name: 'memberEmailPlainText',
+    value: field.memberEmailPlainText,
+    errors: field.getErrors('memberEmailPlainText'),
+    required: true
+}) }}
+
+
+
+
+{{ forms.autosuggestField({
+        label: "Member: Email html template",
+        id: 'memberEmailHtmlTemplate',
+        name: 'memberEmailHtmlTemplate',
+        class: 'code',
+        suggestions: craft.cp.getTemplateSuggestions(),
+        value: field.memberEmailHtmlTemplate,
+        errors: field.getErrors('memberEmailHtmlTemplate'),
+        autocomplete: true,
+        required: false
+    }) }}
+
+
+
+{{ forms.textField({
+    label: "Non member: Email subject line",
+    instructions: false,
+    id: 'nonMemberEmailSubject',
+    name: 'nonMemberEmailSubject',
+    value: field.nonMemberEmailSubject,
+    errors: field.getErrors('nonMemberEmailSubject'),
+    required: true
+}) }}
+
+{{ forms.textareaField({
+    label: "Non member: Email plaintext",
+    instructions: false,
+    id: 'nonMemberEmailPlainText',
+    name: 'nonMemberEmailPlainText',
+    value: field.nonMemberEmailPlainText,
+    errors: field.getErrors('nonMemberEmailPlainText'),
+    required: true
+}) }}
+
+
+
+
+{{ forms.autosuggestField({
+        label: "Non member: Email html template",
+        id: 'nonMemberEmailHtmlTemplate',
+        name: 'nonMemberEmailHtmlTemplate',
+        class: 'code',
+        suggestions: craft.cp.getTemplateSuggestions(),
+        value: field.nonMemberEmailHtmlTemplate,
+        errors: field.getErrors('nonMemberEmailHtmlTemplate'),
+        autocomplete: true,
+        required: false
+    }) }}
+
+
+<input type="hidden" name="minRows" value="0" />
+{#
+{{ forms.textField({
+    label: "Min users"|t('app'),
+    instructions: "The minimum number of users that are allowed."|t('app'),
+    id: 'minRows',
+    name: 'minRows',
+    value: field.minRows,
+    size: 3,
+    errors: field.getErrors('minRows')
+}) }}
+#}
+
+{{ forms.textField({
+    label: "Max users"|t('app'),
+    instructions: "The maximum number of users that are allowed."|t('app'),
+    id: 'maxRows',
+    name: 'maxRows',
+    value: field.maxRows,
+    size: 3,
+    errors: field.getErrors('maxRows')
+}) }}
+
+{{ forms.textField({
+    label: "Add User Label"|t('app'),
+    instructions: "Insert the button label for adding a new user."|t('app'),
+    id: 'addRowLabel',
+    name: 'addRowLabel',
+    value: field.addRowLabel,
+    size: 20,
+    errors: field.getErrors('addRowLabel')
+}) }}
+
+<div class="field">
+    <div class="heading">
+        <label>What user group should be assigned to invited members?</label>
+    </div>
+</div>
+{{ forms.checkboxSelect({
+    id: "userGroups",
+  name: 'userGroups',
+  showAllOption: true,
+  options:  possibleUserGroups,
+  values: field.userGroups
+}) }}
+
+{% if craft.app.db.isMysql %}
+    <hr>
+    <a class="fieldtoggle" data-target="advanced">{{ "Advanced"|t('app') }}</a>
+    <div id="advanced" class="hidden">
+        {{ forms.selectField({
+            label: "Column Type"|t('app'),
+            id: 'column-type',
+            name: 'columnType',
+            instructions: "The type of column this field should get in the database."|t('app'),
+            options: [
+                { value: 'text', label: 'text (~64KB)' },
+                { value: 'mediumtext', label: 'mediumtext (~16MB)' },
+            ],
+            value: field.columnType,
+            warning: (field.id ? "Changing this may result in data loss."|t('app')),
+        }) }}
+    </div>
+{% endif %}
+
+{% for colId, column in field.columns %}
+    {% if column.type == 'select' %}
+        {{ hiddenInput("columns[#{colId}][options]", column.options|json_encode) }}
+    {% endif %}
+{% endfor %}

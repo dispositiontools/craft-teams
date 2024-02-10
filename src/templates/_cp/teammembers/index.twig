@@ -1,0 +1,17 @@
+{% extends "_layouts/elementindex" %}
+{% set title = "Team members" %}
+{% set elementType = 'dispositiontools\\teams\\elements\\Teammember' %}
+
+
+ 
+
+{% block actionButton %}
+
+{% endblock %}
+
+
+{% if sectionHandle is defined %}
+    {% js %}
+        window.defaultSectionHandle = "{{ sectionHandle|e('js') }}";
+    {% endjs %}
+{% endif %}

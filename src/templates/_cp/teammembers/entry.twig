@@ -1,0 +1,166 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% set title = 'Quiz: '~ quiz.title %}
+
+{% set element = quiz %}
+{% set redirectUrl = 'micro-insight/quizzes' %}
+{% set continueEditingUrl = 'micro-insight/quizzes' %}
+{% set fullPageForm = true %}
+
+{% block actionButton %}
+<div class="buttons">
+    <div class="btngroup submit">
+        <a href="{{ element.getCpEditUrl }}/edit" class="btn submit" >Edit</a>
+
+
+    </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+
+    <div id="fields">
+        <h1>{{ quiz.title }}</h1>
+        {% if quiz.image %}
+        <img src="{{ quiz.image.url }}" style="width:25%;" />
+        {% endif%}
+        <p>{{ quiz.description|raw }}</p>
+
+        <p>
+        Started: <b>{{ stats.started }}</b><br />
+        Completed: <b>{{ stats.completed }}</b>
+
+        </p>
+
+{% if quiz.quizStyle %}
+        <p>
+        Quiz Style: <b>{{ quiz.quizStyle }}</b>
+
+        </p>
+{% endif %}
+        <hr>
+
+        <h2>Questions</h2>
+
+
+        <table class="data fullwidth collapsible">
+          <thead>
+            <tr>
+              <th style="width:50px;"></th>
+              <th scope="col">Question</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for question in quiz.getQuestions %}
+            <tr>
+              <td><img src="{{ question.getThumbUrl('50') }}" style="width:50px;"></td>
+              <td><b>{{ question.title }}</b></td>
+              <td><a href="{{ question.getCpEditUrl }}">View</a></td>
+              <td><a href="{{ question.getCpEditUrl }}/edit">Edit</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+        <a href="{{ url('micro-insight/quizzes/'~ quiz.id ~'/add-question') }}" class="btn submit">Add question</a>
+
+        <hr>
+
+
+        {% if quiz.quizType == "educate" and quiz.quizStyle == "Graded" %}
+                <h2>Grades</h2>
+
+
+
+                <table class="data fullwidth collapsible">
+                  <thead>
+                    <tr>
+                      <th style="width:50px;"></th>
+                      <th scope="col">Grade</th>
+                      <th scope='col'>Range</th>
+                      <th scope="col"></th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for category in quiz.getCategories %}
+                    <tr>
+                        <td><img src="{{ category.getThumbUrl('50') }}" style="width:50px;"></td>
+                      <td><b>{{ category.title }}</b></td>
+                      <td>{{ category.rangeMin }}-{{ category.rangeMax }} correct</td>
+                      <td><a href="{{ category.getCpEditUrl }}">View</a></td>
+                      <td><a href="{{ category.getCpEditUrl }}/edit">Edit</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+
+
+
+                <a href="{{ url('micro-insight/quizzes/'~ quiz.id ~'/add-category') }}" class="btn submit">Add Results Band</a>
+
+        {% endif %}
+
+
+
+
+
+
+{% if quiz.quizType == "typing" %}
+        <h2>Result Categories</h2>
+
+
+
+        <table class="data fullwidth collapsible">
+          <thead>
+            <tr>
+              <th style="width:50px;"></th>
+              <th scope="col">Category</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for category in quiz.getCategories %}
+            <tr>
+                <td><img src="{{ category.getThumbUrl('50') }}" style="width:50px;"></td>
+              <td><b>{{ category.title }}</b></td>
+              <td><a href="{{ category.getCpEditUrl }}">View</a></td>
+              <td><a href="{{ category.getCpEditUrl }}/edit">Edit</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+
+
+        <a href="{{ url('micro-insight/quizzes/'~ quiz.id ~'/add-category') }}" class="btn submit">Add category</a>
+
+{% endif %}
+    </div>
+
+
+{% endblock %}
+
+{% block settings %}
+
+these are the settings
+
+
+
+
+{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+{% endblock %}

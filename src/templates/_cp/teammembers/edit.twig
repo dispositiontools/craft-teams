@@ -1,0 +1,211 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% if not quiz.id %}
+  {% set title = 'New '~quizType.title~' Quiz' %}
+{% else %}
+  {% set title = "Quiz" %}
+{% endif %}
+{% set element = quiz %}
+{% set redirectUrl = 'micro-insight/quizzes' %}
+{% set continueEditingUrl = 'micro-insight/quizzes' %}
+{% set fullPageForm = true %}
+
+{% block actionButton %}
+    <div class="buttons">
+        <div class="btngroup submit">
+            <input type="submit" class="btn submit" value="{{ 'Save' }}">
+
+            <div class="btn submit menubtn"></div>
+            <div class="menu">
+                <ul>
+                    <li>
+                        <a class="formsubmit" data-redirect="{{ continueEditingUrl }}">
+                            {{ "Save and continue editing" }}
+                            <span class="shortcut">⌘S</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="formsubmit" data-redirect="{{ url('micro-insight/quizzes/new') }}">
+                            {{ "Save and add another" }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+        <input type="hidden" name="action" value="micro-insight/quiz/save-quiz">
+        {{ redirectInput('micro-insight/quizzes/{id}') }}
+        {{ hiddenInput('quizId', quiz.id) }}
+        {{ hiddenInput('siteId', quiz.siteId) }}
+        {{ hiddenInput('quizTypeId', quiz.quizTypeId) }}
+        {{ hiddenInput('quizType', quiz.quizType) }}
+        {{ hiddenInput('quizStyle', quiz.quizStyle) }}
+        {{ hiddenInput('fieldLayoutId', quiz.fieldLayoutId) }}
+
+    <div id="fields">
+      {{ forms.textField({
+
+          label: 'Title',
+          siteId: quiz.siteId,
+          translationDescription: 'This field is translated for each site.'|t('app'),
+          id: 'title',
+          name: 'title',
+          value: quiz.title,
+          errors:  quiz.getErrors('title'),
+          first: true,
+          autofocus: true,
+          required: true,
+          disabled: false,
+          maxlength: 255
+      }) }}
+
+      <hr />
+{% if quiz.handle != "" %}
+      {{ forms.textField({
+          label: "Handle",
+          siteId: quiz.siteId,
+          instructions: "How you’ll refer to this Quiz in the templates.",
+          id: 'handle',
+          class: 'code',
+          name: 'handle',
+          value: quiz.handle,
+          errors: quiz.getErrors('handle'),
+          required: true
+      }) }}
+{% endif %}
+
+
+<div class="field" id="image-field">
+    <div class="heading">
+        <label for="image">Image</label>
+        <div class="instructions"><p></p></div>
+    </div>
+    <div class="input">
+        {% if assetsSourceExists %}
+            {{ forms.elementSelect({
+                elements: imageElements,
+                id: 'image',
+                name: 'image',
+                elementType: imageElementType,
+                sources: '*',
+                criteria: {
+                    'kind': [],
+                    'enabledForSite': null,
+                    'siteId': quiz.siteId,
+                },
+                sourceElementId: quiz.id,
+                jsClass: 'Craft.AssetSelectInput',
+                selectionLabel: 'Select Quiz image',
+                viewMode: 'large',
+                limit: 1,
+                modalStorageKey: 'microinsight.image',
+            }) }}
+        {% else %}
+            <p class="error">No assets sources currently exist. <a href="{{ newAssetsSourceUrl }}">Create one now...</a></p>
+        {% endif %}
+    </div>
+</div>
+
+      {{ forms.textareaField({
+          label: "Description",
+          siteId: quiz.siteId,
+          instructions: "A small description describing what this quiz is about",
+          id: 'description',
+          name: 'description',
+          value: quiz.description,
+          errors: quiz.getErrors('description'),
+          required: false
+      }) }}
+
+{% js %}
+$(function() {
+  $('#description').trumbowyg({
+      btns: [['strong', 'em']],
+      removeformatPasted: true,
+      autogrow: true
+    });
+});
+{% endjs %}
+
+
+
+{% if quiz.quizType == "typing" %}
+      {% set quizStyleOptions  = [
+          {label: 'Show thumbnails and titles'|t('app'), value: 'full'},
+          {label: 'Show thumbnails only'|t('app'), value: 'thumbs'},
+      ] %}
+
+{% endif %}
+
+{% if quiz.quizType == "educate" %}
+      {% set quizStyleOptions  = [
+          {label: 'Simple - Just show how many the user got right', value: 'Simple'},
+          {label: 'Show graded results', value: 'Graded'},
+      ] %}
+
+      {{ forms.selectField({
+          id: 'quizstyle',
+          name: 'quizStyle',
+          label: 'Style',
+          instructions: '',
+          options: quizStyleOptions,
+          value: quiz.quizStyle,
+          errors: quiz.getErrors('quizStyle'),
+      }) }}
+
+
+{% endif %}
+
+
+
+
+      {{ forms.lightswitchField({
+
+          label: 'Hide Quiz Content when displaying on the page',
+          instructions: "Useful when you want to display the quiz details in page content",
+          id: 'hideQuizContent',
+          name: 'hideQuizContent',
+          on: quiz.hideQuizContent,
+
+      }) }}
+
+
+
+      {% if element.getFieldLayout %}
+          {% set form = element.getFieldLayout().createForm(element) %}
+          {% set tabs = form.getTabMenu() %}
+          {% set fieldsHtml = form.render() %}
+
+
+            {{ fieldsHtml|raw }}
+      {% endif %}
+
+    </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/ui/trumbowyg.min.css" integrity="sha512-XjpikIIW1P7jUS8ZWIznGs9KHujZQxhbnEsqMVQ5GBTTRmmJe32+ULipOxFePB8F8j9ahKmCjyJJ22VNEX60yg==" crossorigin="anonymous" />
+
+{% endblock %}
+
+{% block settings %}
+
+these are the settings
+
+
+
+
+{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+{% endblock %}
+{% do view.registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.21.0/trumbowyg.min.js",{
+    depends: 'craft\\web\\assets\\cp\\CpAsset',
+    position:3
+}) %}

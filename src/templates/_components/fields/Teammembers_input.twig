@@ -1,0 +1,51 @@
+
+
+{{ table|raw }}
+
+    <div class="heading">
+        <legend  aria-hidden="true">Members</legend>
+    </div>
+
+    <div class="input ltr" style="overflow-x: auto;">
+
+
+
+    <table class="editable fullwidth">
+        <thead>
+            <tr>    
+
+                <th  scope="col" class="email-cell textual">Id</th>
+                <th  scope="col" class="email-cell textual">Status</th>
+                <th  scope="col" class="email-cell textual">User Id</th>
+                <th  scope="col" class="email-cell textual">Email address</th>
+                <th  scope="col" class="email-cell textual">First name</th>
+                <th  scope="col" class="email-cell textual">Last name</th>
+            </tr>
+        </thead>
+
+    {% for teamMember in teamMembers %}
+
+        <tr>
+            <td>{{ teamMember.id }}</td>
+            <td>{{ teamMember.teamMemberStatus }}</td>
+            <td>{{ teamMember.userId }}</td>
+        
+            <td>{{ teamMember.emailAddress }}</td>
+            <td>{{ teamMember.firstName }}</td>
+            <td>{{ teamMember.lastName }}</td>
+            <td>{% if teamMember.startDate %}{{ teamMember.startDate|date("Y-m-d") }}{% endif %}</td>
+            <td>{% if teamMember.endDate %}{{ teamMember.endDate|date("Y-m-d") }}{% endif %}</td>
+            <td>{{ teamMember.isAdmin }}</td>
+            <td>{{ teamMember.isMember }}</td>
+
+            {% if teamMember.invitedByUserId %}
+
+
+            {% endif %}
+
+            <td>{{ teamMember.isBillingAdmin }}</td>
+        </tr>
+    
+    {% endfor %}
+    </table>
+</div>

@@ -1,0 +1,49 @@
+{
+    "name": "dispositiontools/craft-teams",
+    "description": "Create teams",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "teams"
+    ],
+    "support": {
+        "docs": "https://github.com/dispositiontools/craft-teams/blob/craftv3/README.md",
+        "issues": "https://github.com/dispositiontools/craft-teams/issues"
+    },
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Disposition Tools",
+            "homepage": "https://www.disposition.tools"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.2.0"
+    },
+    "require-dev": {
+      "craftcms/cms": "^3.2.0",
+      "vlucas/phpdotenv": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "dispositiontools\\teams\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Teams",
+        "handle": "teams",
+        "developer": "Disposition Tools",
+        "developerUrl": "https://www.disposition.tools",
+        "documentationUrl": "https://github.com/dispositiontools/craft-teams/blob/craftv3/README.md",
+        "changelogUrl": "https://github.com/dispositiontools/craft-teams/blob/craftv3/CHANGELOG.md",
+        "components": {
+            "cpanel": "dispositiontools\\teams\\services\\Cpanel",
+            "teams": "dispositiontools\\teams\\services\\Teamsservice"
+        },
+        "class": "dispositiontools\\teams\\Teams"
+    }
+}

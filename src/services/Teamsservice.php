@@ -1,6 +1,6 @@
 <?php
 /**
- * Teams plugin for Craft CMS 3.x
+ * MicroInsight plugin for Craft CMS 3.x
  *
  * Create teams on elements
  *
@@ -81,6 +81,15 @@ class Teamsservice extends Component
         }
 
     }
+
+
+    // Teams::$plugin->teams->getTeammemberById($teammemberId);
+    public function getTeammemberById($teammemberId)
+    {
+      $query = TeammemberElement::find()->id($teammemberId)->siteId('*');
+      return $query->one();
+    }
+
 
 
     // Teams::$plugin->teams->getTeamById($teamId);
@@ -309,6 +318,12 @@ class Teamsservice extends Component
         }
 
         $teamMembersRaw = $element->getFieldValue($fieldHandle);
+        //ray($teamMembersRaw);
+        if(!$teamMembersRaw)
+        {
+            return false;
+        }
+       
 
         // get all current team members to check if they have been made before
         $currentTeamMembers = $this->getTeamMembersByTeamElementId($elementId);

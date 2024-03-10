@@ -107,6 +107,88 @@ class Teamsservice extends Component
        return $teamMembers;
     }
 
+
+    // Teams::$plugin->teams->getAccessByElementId( $teamElementId, $options );
+    public function getAccessByElementId($teamElementId, $options)
+    {
+        
+        $userId = false;
+        $fieldId = false;
+
+        $access = [
+            'teamMemberStatus' => '',
+            'teamMemberStatuses' => [],
+            'isAdmin' => false,
+            'isMember' => false 
+        ];
+
+        if($options)
+        {
+            if( array_key_exists( 'userId', $options ) )
+            {
+                $userId = $options['userId'];
+            }
+            if( array_key_exists('fieldId', $options ) )
+            {
+                $fieldId = $options['fieldId'];
+            }
+        }
+
+        
+        if($userId)
+        {
+            $user = Craft::$app->users->getUserById($userId);
+            $userId = $user->id;
+        }
+        else
+        {
+            $user = Craft::$app->getUser()->getIdentity();
+            $userId = $user->id;
+        }
+        if(!$user)
+        {
+            return $access;
+        }
+
+        if(!$teamElementId)
+        {
+            return $access;
+        }
+
+        $query = TeammemberElement::find()->siteId('*')->userId($userId)->teamElementId($teamElementId);
+
+        if($fieldId){
+            $query->fieldId($fieldId);
+        }
+
+        $teammemberElements = $query->all();
+
+
+        
+        foreach($teammemberElements as $teammemberElement)
+        {
+           if($teammemberElement->dateLeft != null)
+           {
+            continue;
+           }
+           if($teammemberElement->isAdmin == 1 )
+           {
+            $access['isAdmin'] = true;
+           }
+           if($teammemberElement->isMember == 1  )
+           {
+            $access['isMember'] = true;
+           }
+           $access['teamMemberStatuses'][] = $teammemberElement->teamMemberStatus;
+           $access['teamMemberStatus'] = $teammemberElement->teamMemberStatus;
+        }
+
+        return $access;
+
+    }
+
+
+
     // Teams::$plugin->teams->deleteTeamMembersByTeamElementId( $teamElementId );
     public function deleteTeamMembersByTeamElementId($teamElementId)
     {

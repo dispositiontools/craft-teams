@@ -1,5 +1,10 @@
 # Teams Changelog
 
+
+## 1.0.3 - 2024-03-10
+### Added
+- Get team member access details function
+
 ## 1.0.2 - 2024-03-09
 ### Added
 - Get team member by team member id

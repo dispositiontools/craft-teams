@@ -39,9 +39,9 @@ class TeamsVariable
     }
 
     // {{ craft.teams.getAccessByElementId() }}
-    public function getAccessByElementId($elementId)
+    public function getAccessByElementId($teamElementId, $options = null)
     {
-
+       return Teams::$plugin->teams->getAccessByElementId( $teamElementId, $options );
     }
 
 

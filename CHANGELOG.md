@@ -1,6 +1,10 @@
 # Teams Changelog
 
 
+## 1.0.4 - 2024-03--14
+### Updated
+- Stopped using the queue to add a person to a team. Will look later to make this a setting
+
 ## 1.0.3 - 2024-03-10
 ### Added
 - Get team member access details function

@@ -466,7 +466,7 @@ class Team extends Element
     public function getCpEditUrl()
     {
         // The slug *might* not be set if this is a Draft and they've deleted it for whatever reason
-        $path = 'teams/team/' . $this->getSourceId();
+        $path = 'teams/team/' . $this->getCanonicalId();
         return UrlHelper::cpUrl($path);
     }
 

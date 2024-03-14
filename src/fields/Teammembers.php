@@ -133,6 +133,8 @@ class Teammembers extends Field
                     $elementTitle = $element->title;
                 }
 
+                Teams::$plugin->teams->processElementTeamInvites( $element->id, get_class($element), $element->siteId, $this->handle );
+       /*
             $queue = Craft::$app->getQueue();
             $jobId = $queue->push(new ProcessfieldinviteJob([
                  'description' => $description ,
@@ -143,6 +145,7 @@ class Teammembers extends Field
                  'cpEditUrl' => $cpEditUrl,
                  'elementTitle' => $elementTitle
              ]));
+                  */
 
 
         }

@@ -1,49 +1,46 @@
 {
     "name": "dispositiontools/craft-teams",
-    "description": "Create teams",
+    "description": "Create teams based on entries by inviting and managing users",
     "type": "craft-plugin",
-    "version": "1.0.0",
-    "keywords": [
-        "craft",
-        "cms",
-        "craftcms",
-        "craft-plugin",
-        "teams"
-    ],
-    "support": {
-        "docs": "https://github.com/dispositiontools/craft-teams/blob/craftv3/README.md",
-        "issues": "https://github.com/dispositiontools/craft-teams/issues"
-    },
     "license": "proprietary",
-    "authors": [
-        {
-            "name": "Disposition Tools",
-            "homepage": "https://www.disposition.tools"
-        }
-    ],
+    "support": {
+        "email": "support@disposition.tools",
+        "issues": "https://github.com/dispositiontools/craft-teams/issues?state=open",
+        "source": "https://github.com/dispositiontools/craft-teams",
+        "docs": "https://github.com/dispositiontools/craft-teams",
+        "rss": "https://github.com/dispositiontools/craft-teams/releases.atom"
+    },
     "require": {
-        "craftcms/cms": "^3.2.0"
+        "php": ">=8.0.2",
+        "craftcms/cms": "^4.9.0"
     },
     "require-dev": {
-      "craftcms/cms": "^3.2.0",
-      "vlucas/phpdotenv": "^3.0"
+        "craftcms/ecs": "dev-main",
+        "craftcms/phpstan": "dev-main"
     },
     "autoload": {
         "psr-4": {
-          "dispositiontools\\teams\\": "src/"
+            "dispositiontools\\teams\\": "src/"
         }
     },
     "extra": {
-        "name": "Teams",
         "handle": "teams",
+        "name": "Teams",
         "developer": "Disposition Tools",
-        "developerUrl": "https://www.disposition.tools",
-        "documentationUrl": "https://github.com/dispositiontools/craft-teams/blob/craftv3/README.md",
-        "changelogUrl": "https://github.com/dispositiontools/craft-teams/blob/craftv3/CHANGELOG.md",
-        "components": {
-            "cpanel": "dispositiontools\\teams\\services\\Cpanel",
-            "teams": "dispositiontools\\teams\\services\\Teamsservice"
-        },
+        "documentationUrl": "https://github.com/dispositiontools/craft-teams",
         "class": "dispositiontools\\teams\\Teams"
+    },
+    "scripts": {
+        "check-cs": "ecs check --ansi",
+        "fix-cs": "ecs check --ansi --fix",
+        "phpstan": "phpstan --memory-limit=1G"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
     }
 }
+

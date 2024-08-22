@@ -1,0 +1,267 @@
+
+{% do view.registerAssetBundle("dispositiontools\\teams\\web\\assets\\teamscp\\TeamsCpAsset") %}
+{% import '_includes/forms.twig' as forms %}
+<fieldset class="w-full mb-40px block" >
+<legend>Team member invites</legend>
+
+
+
+
+ <div class="w-full   " style="padding:10px;" x-data='{
+        teammembers:{{ invites|json_encode|raw }},
+        deleteTeammember(index) {
+            this.teammembers = this.teammembers.filter((teammember, teammemberIndex) => {
+                return index !== teammemberIndex
+            })
+        },
+    }'>
+
+    {% set tdClass = "py-15px md:py-10px px-20px w-full block md:w-auto md:table-cell text-14px" %}
+
+
+
+
+
+    {% set fields = [
+        {
+            label: "Email",
+            handle: "email",
+            type: "text",
+            width: "width-50"
+        },
+         {
+            label: "Note",
+            handle: "note",
+            type: "text",
+            width: "width-50"
+        },
+        {
+            label: "First name",
+            handle: "firstName",
+            type: "text",
+            width: "width-50"
+        },
+          {
+            label: "Last name",
+            handle: "lastName",
+            type: "text",
+            width: "width-50"
+        }
+    ] %}
+
+<template x-for="(teammember, index) in teammembers">
+       <div class="flex-fields" style=" background-color: var(--gray-050);
+    border: 1px solid var(--hairline-color);
+    border-radius: var(--large-border-radius);
+    margin-bottom: 10px;
+    padding: var(--m) var(--m) var(--m);
+    position: relative;">
+
+
+{% for field in fields %}
+    {% switch field.type %}
+
+        {% case "text" %}
+            <div id="fields-{{ field.handle }}-field" class="field width-50" data-attribute="invites-{{ field.handle }}" data-type="craft\fields\PlainText"  >
+                <div class="heading">
+                    <label id="fields-{{ field.handle }}-label" for="fields-{{ field.handle }}">{{ field.label }}</label>
+                    <div class="flex-grow"></div>
+                </div>
+                <div class="input ltr">
+                    <input type="text" id="fields-{{ field.handle }}" class="nicetext text fullwidth"  
+                        x-bind:name="'fields[{{ handle }}][invites]['+index+'][{{ field.handle }}]'" x-model="teammember.{{ field.handle }}" 
+                        autocomplete="off" dir="ltr" data-show-chars-left="" style="padding-right: ;">
+                </div>
+            </div>
+
+    {% endswitch %}
+{% endfor %}
+
+   
+
+
+
+
+
+
+<div id="fields-sendEmail-field" class="field width-50" data-attribute="sendEmail">
+    <div class="heading">
+        <label id="fields-sendEmail-label" for="fields-sendEmail">Send email?</label>
+    </div>
+    <div id="fields-inviteStatus-instructions" class="instructions"><p> </p></div>
+    <div class="input ltr">
+        <div class="select">    
+            <select id="fields-inviteStatus"   
+            aria-describedby="fields-sendEmail-instructions" aria-labelledby="fields-sendEmail-label" 
+            x-bind:name="'fields[{{ handle }}][invites]['+index+'][inviteStatus]'" x-model="teammember.inviteStatus">
+                <option value="nothing">Please select...</option>
+                <option value="send">Create invite and send email</option>
+                <option value="create">Create invite but don't send email</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div id="fields-autoJoin-field" class="field width-50" data-attribute="autoJoin">
+    <div class="heading">
+        <label id="fields-autoJoin-label" for="fields-autoJoin">Auto join</label>
+    </div>
+    <div id="fields-autoJoin-instructions" class="instructions"><p> </p></div>
+    <div class="input ltr">
+        <div class="select">    
+            <select id="fields-autoJoin"   
+            aria-describedby="fields-autoJoin-instructions" aria-labelledby="fields-autoJoin-label" 
+            x-bind:name="'fields[{{ handle }}][invites]['+index+'][autoJoin]'" x-model="teammember.autoJoin">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div id="fields-isAdmin-field" class="field width-50" data-attribute="isAdmin">
+    <div class="heading">
+        <label id="fields-isAdmin-label" for="fields-isAdmin">Are they an admin of this team</label>
+    </div>
+    <div id="fields-isAdmin-instructions" class="instructions"><p> </p></div>
+    <div class="input ltr">
+        <div class="select">    
+            <select id="fields-isAdmin"   
+            aria-describedby="fields-isAdmin-instructions" aria-labelledby="fields-isAdmin-label" 
+            x-bind:name="'fields[{{ handle }}][invites]['+index+'][isAdmin]'" x-model="teammember.isAdmin">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div id="fields-isMember-field" class="field width-50" data-attribute="isMember">
+    <div class="heading">
+        <label id="fields-isMember-label" for="fields-isMember">Are they an member of this team</label>
+    </div>
+    <div id="fields-isMember-instructions" class="instructions"><p> </p></div>
+    <div class="input ltr">
+        <div class="select">    
+            <select id="fields-isMember"   
+            aria-describedby="fields-isMember-instructions" aria-labelledby="fields-isMember-label" 
+            x-bind:name="'fields[{{ handle }}][invites]['+index+'][isMember]'" x-model="teammember.isMember">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+               
+            </select>
+        </div>
+    </div>
+</div>
+
+ 
+                <div class=" " style="display:flex ; justify-content: end; margin-bottom:0 !important;">
+                        <button @click.prevent="deleteTeammember(index)" class="text-black btn">Delete invite</button>
+                </div>
+
+
+
+        </div>
+    </template>
+
+
+
+
+
+
+        
+<div   style="width:100%; margin-bottom: 20px !important;">
+    <button @click.prevent="teammembers.push({
+        email: '',
+        firstName: '',
+        lastName: '',
+        inviteStatus: 'create',
+        isAdmin: 0,
+        isMember: 0,
+        autoJoin: 1
+    })"
+        class="btn dashed add icon">
+            Add team member 
+        
+    </button>
+</div>
+
+<div x-show="teammembers.length > 0" class="" style="margin-bottom: 20px !important;">
+{{ forms.textareaField({
+    label: 'Message to add to invitation',
+    instructions: 'This will be added to the invitation with the variable [inviteMessage]',
+    id: 'inviteMessage',
+    name: handle~"[inviteMessage]",
+    value: inviteMessageValue })
+}}
+</div>
+
+
+</div>
+
+
+
+
+
+</fieldset>
+
+
+
+    <div class="heading">
+        <legend  aria-hidden="true">Team members</legend>
+    </div>
+
+    <div class="input ltr" style="overflow-x: auto;">
+
+
+
+    <table class="editable fullwidth">
+        <thead>
+            <tr>    
+
+                <th  scope="col" class="email-cell textual">Invite Id</th>
+                <th  scope="col" class="email-cell textual">Status</th>
+                <th  scope="col" class="email-cell textual">User Id</th>
+                <th  scope="col" class="email-cell textual">Email address</th>
+                <th  scope="col" class="email-cell textual">First name</th>
+                <th  scope="col" class="email-cell textual">Last name</th>
+                <th  scope="col" class="email-cell textual">Date Joined</th>
+                <th  scope="col" class="email-cell textual">Date Left</th>
+                <th  scope="col" class="email-cell textual">Admin</th>
+                <th  scope="col" class="email-cell textual">Member</th>
+            </tr>
+        </thead>
+
+    {% for teamMember in teamMembers %}
+
+        <tr>
+            <td>{{ teamMember.id }}</td>
+            <td>{{ teamMember.teamMemberStatus }}</td>
+            <td>{{ teamMember.userId }}</td>
+        
+            <td>{{ teamMember.emailAddress }}</td>
+            <td>{{ teamMember.firstName }}</td>
+            <td>{{ teamMember.lastName }}</td>
+            <td>{% if teamMember.dateJoined %}{{ teamMember.dateJoined|date("Y-m-d") }}{% endif %}</td>
+            <td>{% if teamMember.dateLeft %}{{ teamMember.dateLeft|date("Y-m-d") }}{% endif %}</td>
+            <td>{{ teamMember.isAdmin }}</td>
+            <td>{{ teamMember.isMember }}</td>
+
+            {% if teamMember.invitedByUserId %}
+
+
+            {% endif %}
+{#
+            <td>{{ teamMember.isBillingAdmin }}</td>
+            #}
+        </tr>
+    
+    {% endfor %}
+
+    
+    </table>
+</div>
+
+

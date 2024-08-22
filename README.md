@@ -1,4 +1,30 @@
 # Teams
-Create teams within CraftCMS
 
-[Craft CMS v3 version](https://github.com/dispositiontools/craft-teams/blob/craftv3/README.md)
+Create teams based on entries by inviting and managing users
+
+## Requirements
+
+This plugin requires Craft CMS 4.9.0 or later, and PHP 8.0.2 or later.
+
+## Installation
+
+You can install this plugin from the Plugin Store or with Composer.
+
+#### From the Plugin Store
+
+Go to the Plugin Store in your project’s Control Panel and search for “Teams”. Then press “Install”.
+
+#### With Composer
+
+Open your terminal and run the following commands:
+
+```bash
+# go to the project directory
+cd /path/to/my-project.test
+
+# tell Composer to load the plugin
+composer require dispositiontools/craft-teams
+
+# tell Craft to install the plugin
+./craft plugin/install teams
+```

@@ -169,7 +169,8 @@ class Install extends Migration
     {
 
 
-      // microinsight_quizzes table
+      // teams_teams table
+      /*
           $this->addForeignKey(
               $this->db->getForeignKeyName('{{%teams_teams}}', 'siteId'),
               '{{%teams_teams}}',
@@ -181,7 +182,7 @@ class Install extends Migration
           );
 
 
-    // microinsight_quiztype table
+    // teams_members table
         $this->addForeignKey(
             $this->db->getForeignKeyName('{{%teams_members}}', 'siteId'),
             '{{%teams_members}}',
@@ -192,7 +193,7 @@ class Install extends Migration
             'CASCADE'
         );
 
-
+   */
     }
 
 

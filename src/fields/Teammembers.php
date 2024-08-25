@@ -186,7 +186,19 @@ class Teammembers extends Field implements PreviewableFieldInterface, SortableFi
 
     public function getSettingsHtml(): ?string
     {
-        return null;
+        $userGroupsService = Craft::$app->userGroups;
+        $userGroups = $userGroupsService->assignableGroups;
+
+        $possibleUserGroups = [];
+        foreach($userGroups as $userGroup)
+        {
+            $possibleUserGroups[$userGroup->id] = $userGroup->name;
+        }
+        $view = Craft::$app->getView();
+        return $view->renderTemplate('teams/teammembers/_field_settings.twig', [
+            'field' => $this,
+            'possibleUserGroups' => $possibleUserGroups,
+        ]);
     }
 
     public function getContentColumnType(): array|string

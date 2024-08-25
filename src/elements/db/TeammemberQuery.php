@@ -39,7 +39,7 @@ class TeammemberQuery extends ElementQuery
     
     public function teamElementType(?string $value = null): self 
     {
-        $this->elementType = $value;
+        $this->teamElementType = $value;
         return $this;
     }
 

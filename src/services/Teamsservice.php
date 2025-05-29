@@ -64,6 +64,51 @@ class Teamsservice extends Component
     }
 
 
+
+     // Teams::$plugin->teams->getTeamMembersByFieldId( $options );
+    public function getTeamMembersByFieldId($options = null)
+    {
+
+        $fieldId = false;
+        $teamMemberStatus = "active";
+        if($options)
+        {
+
+            if( array_key_exists('fieldId', $options ) )
+            {
+                $fieldId = $options['fieldId'];
+            }
+            if( array_key_exists('teamMemberStatus', $options ) )
+            {
+                $teamMemberStatus = $options['teamMemberStatus'];
+            }
+        }
+
+        if( ! $fieldId ){
+            return [];
+        }
+
+        $query = TeammemberElement::find()->siteId('*')->teamMemberStatus($teamMemberStatus);
+        if($fieldId)
+        {
+            $query->fieldId( $fieldId );
+        }
+        $teammemberElements = $query->all();
+        
+        $elementIds = [];
+        foreach($teammemberElements as $teammemberElement)
+        {
+            if( !in_array($teammemberElement->teamElementId, $elementIds) )
+            {
+                $elementIds[] = $teammemberElement->teamElementId;
+            }
+        }
+
+        return $elementIds;
+    }
+
+
+
     // Teams::$plugin->teams->getAccessByElementId( $teamElementId, $options );
     public function getAccessByElementId($teamElementId, $options)
     {

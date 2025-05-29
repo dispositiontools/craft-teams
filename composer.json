@@ -2,6 +2,7 @@
     "name": "dispositiontools/craft-teams",
     "description": "Create teams based on entries by inviting and managing users",
     "type": "craft-plugin",
+    "version": "4.0.2",
     "license": "proprietary",
     "support": {
         "email": "support@disposition.tools",

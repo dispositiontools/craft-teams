@@ -94,17 +94,8 @@ class Teamsservice extends Component
             $query->fieldId( $fieldId );
         }
         $teammemberElements = $query->all();
-        
-        $elementIds = [];
-        foreach($teammemberElements as $teammemberElement)
-        {
-            if( !in_array($teammemberElement->teamElementId, $elementIds) )
-            {
-                $elementIds[] = $teammemberElement->teamElementId;
-            }
-        }
 
-        return $elementIds;
+        return $teammemberElements;
     }
 
 
